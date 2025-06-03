@@ -18,12 +18,12 @@ public:
         globalAP = maxAP;
     }
 
-    // Reset AP at the start of each turn
+    
     void resetAP() {
         globalAP = maxAP;
     }
 
-    // Try to use AP, return true if successful
+    
     bool useAP(int amount) {
         if (globalAP >= amount) {
             globalAP -= amount;
@@ -38,20 +38,20 @@ public:
     Party& getParty() { return party; }
     EnemyGroup& getEnemyGroup() { return enemyGroup; }
 
-    // Check if battle is over (win/lose)
+    
     bool isBattleOver() const {
         return party.allDefeated() || enemyGroup.allDefeated();
     }
 
-    // Returns true if player won
+    
     bool isPlayerVictory() const {
         return enemyGroup.allDefeated() && !party.allDefeated();
     }
 
-    // Returns true if player lost
+    
     bool isPlayerDefeat() const {
         return party.allDefeated();
     }
 
-    // Add more methods for turn management, action queue, etc. as needed
+    
 };

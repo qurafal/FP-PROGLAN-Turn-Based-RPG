@@ -18,29 +18,29 @@ public:
 
 
  void takeDamage(int dmg, ATTACK_TYPE attackType) override {
-        // Check if the break gauge is full
+        
         if (breakGauge >= breakGaugeMax) {
-            // If full, double the damage
+            
             dmg *= 2;
         }
-        // Call the base class takeDamage method
+        
         Entity::takeDamage(dmg, attackType);
     }
     void increaseBreakGauge(int amount) {
         breakGauge += amount;
         if (breakGauge > breakGaugeMax) {
-            breakGauge = breakGaugeMax; // Cap the break gauge at max value
+            breakGauge = breakGaugeMax; 
         }
     }
     void resetBreakGauge() {
-        breakGauge = 0; // Reset the break gauge
+        breakGauge = 0; 
     }
     int getBreakGauge() const {
-        return breakGauge; // Return current break gauge value
+        return breakGauge; 
     }
 
-    virtual void attack1(Character &target) = 0; // Pure virtual function for attack
-    virtual void attack2(Character &target) = 0; // Pure virtual function for second attack
+    virtual void attack1(Character &target) = 0; 
+    virtual void attack2(Character &target) = 0; 
 
 
     bool getIsBroken() const { return isBroken; }

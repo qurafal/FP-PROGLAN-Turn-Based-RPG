@@ -4,7 +4,7 @@
 
 class Enemy; // Forward declaration
 
-// Character class (for player characters)
+
 class Character : public Entity
 {
 

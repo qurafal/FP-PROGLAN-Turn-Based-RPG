@@ -10,15 +10,15 @@ class hp{
         uint16_t maxHp;
 
     public:
-        hp(uint16_t max) : maxHp(max), currentHp(max) {} // Constructor initializes both current and max HP
+        hp(uint16_t max) : maxHp(max), currentHp(max) {} 
         void setMaxHp(uint16_t max) {
             maxHp = max;
-            currentHp = max; // Initialize current HP to max
+            currentHp = max; 
         }
         void setCurrentHp(uint16_t current) {
             currentHp = current;
             if (currentHp > maxHp) {
-                currentHp = maxHp; // Cap current HP at max HP
+                currentHp = maxHp;
             }
         }
         uint16_t getCurrentHp() const {
@@ -30,9 +30,9 @@ class hp{
         
         
         bool isAlive() const {
-            return currentHp > 0; // Check if current HP is greater than 0
+            return currentHp > 0; 
         }
         void reset() {
-            currentHp = maxHp; // Reset current HP to max HP
+            currentHp = maxHp; 
         }
 };

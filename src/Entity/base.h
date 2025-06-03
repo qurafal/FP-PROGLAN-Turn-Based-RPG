@@ -8,7 +8,7 @@
 
 extern int globalAP;
 void resetGlobalAP();
-// Entity Type (for break system)
+
 typedef enum ENTITY_TYPE
 {
     MORTAL = 0,
@@ -16,7 +16,7 @@ typedef enum ENTITY_TYPE
     CONSTRUCT
 } ENTITY_TYPE;
 
-// Attack Type (optional, if you want to keep physical/magical)
+
 typedef enum ATTACK_TYPE
 {
     PHYSICAL = 0,
@@ -36,7 +36,7 @@ protected:
     std::string name;
     int hp, maxHp;
     int atk, def, mag, res;
-    ENTITY_TYPE ent_type; // Type of entity (MORTAL, ETHEREAL, CONSTRUCT)
+    ENTITY_TYPE ent_type; 
 
 public:
     Entity(const std::string &name, int hp, int atk, int def, int mag, int res, ENTITY_TYPE ent_type)
@@ -78,7 +78,7 @@ public:
         return false; 
     }
 
-    // Getter methods
+    
     const std::string &getName() const { return name; }
     int getHP() const { return hp; }
     int getMaxHP() const { return maxHp; }
@@ -88,7 +88,7 @@ public:
     int getRES() const { return res; }
     ENTITY_TYPE getType() const { return ent_type; }
 
-    // Setter methods (optional, for stat boost)
+    
     void setHP(int value) { hp = value; }
     void setATK(int value) { atk = value; }
     void setDEF(int value) { def = value; }

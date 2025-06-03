@@ -2,7 +2,7 @@
 #include "party.h"
 Party partySelector(sf::RenderWindow& window) {
     sf::Font font;
-    font.loadFromFile("PixelOperator.ttf"); // Ganti dengan font yang kamu punya
+    font.loadFromFile("PixelOperator.ttf"); 
 
     std::vector<std::string> characterNames = {"Arthesa", "Ahmed", "Perkia", "Hamilla"};
     std::vector<bool> picked(characterNames.size(), false);

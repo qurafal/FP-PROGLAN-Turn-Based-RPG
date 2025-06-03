@@ -9,12 +9,12 @@ private:
 public:
     EnemyGroup() = default;
 
-    // Add an enemy to the group
+    
     void addEnemy(std::unique_ptr<Enemy> enemy) {
         enemies.push_back(std::move(enemy));
     }
 
-    // Get a pointer to an enemy by index
+    
     Enemy* getEnemy(size_t index) {
         if (index < enemies.size()) {
             return enemies[index].get();
@@ -22,7 +22,7 @@ public:
         return nullptr;
     }
 
-    // Get the number of enemies
+    
     size_t size() const {
         return enemies.size();
     }
@@ -35,7 +35,7 @@ public:
         return true;
     }
 
-    // Get all alive enemies' indices
+    
     std::vector<size_t> getAliveIndices() const {
         std::vector<size_t> indices;
         for (size_t i = 0; i < enemies.size(); ++i) {
@@ -46,7 +46,7 @@ public:
         return indices;
     }
 
-    // Access to the underlying vector (const)
+    
     const std::vector<std::unique_ptr<Enemy>>& getEnemies() const {
         return enemies;
     }
