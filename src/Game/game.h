@@ -12,6 +12,7 @@ class Game {
         sf::RenderWindow* window;
         sf::VideoMode videoMode;
         sf::Event ev;
+        sf::Music music; 
 
         Party party; 
         std::unique_ptr<Floor> floor; 
