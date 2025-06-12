@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include "character.h"
+#include <functional>
 
 class Character; // Forward declaration
 
@@ -12,10 +13,18 @@ protected:
     int breakGauge, breakGaugeMax;
     bool isBroken;
 
-public:
-    Enemy(const std::string &name, int hp, int atk, int def, int mag, int res, ENTITY_TYPE ent_type, int breakGaugeMax)
-        : Entity(name, hp, atk, def, mag, res, ent_type) , breakGauge(0), breakGaugeMax(breakGaugeMax), isBroken(false) {}
+    std::function<void(Character&)> attack1Func;
+    std::function<void(Character&)> attack2Func;
 
+public:
+     Enemy(const std::string &name, int hp, int atk, int def, int mag, int res, ENTITY_TYPE ent_type, int breakGaugeMax,
+          std::function<void(Character&)> attack1Func,
+          std::function<void(Character&)> attack2Func)
+        : Entity(name, hp, atk, def, mag, res, ent_type),
+          breakGauge(0), breakGaugeMax(breakGaugeMax), isBroken(false),
+          attack1Func(attack1Func), attack2Func(attack2Func) {}
+
+    virtual ~Enemy() override = default;
 
  void takeDamage(int dmg, ATTACK_TYPE attackType) override {
         
@@ -39,30 +48,30 @@ public:
         return breakGauge; 
     }
 
-    virtual void attack1(Character &target) = 0; 
-    virtual void attack2(Character &target) = 0; 
+    void attack1(Character &target) { attack1Func(target); }
+    void attack2(Character &target) { attack2Func(target); }
 
 
     bool getIsBroken() const { return isBroken; }
     void resetBreak() { isBroken = false; }
 };
 
-class Goblin : public Enemy
-{
-public:
-    Goblin();
+// class Goblin : public Enemy
+// {
+// public:
+//     Goblin();
 
-    void attack1(Character &target) override;
-    void attack2(Character &target) override;
-};
-class Skeleton : public Enemy
-{
-public:
-    Skeleton();
+//     void attack1(Character &target) override;
+//     void attack2(Character &target) override;
+// };
+// class Skeleton : public Enemy
+// {
+// public:
+//     Skeleton();
 
-    void attack1(Character &target) override;
-    void attack2(Character &target) override;
-};
+//     void attack1(Character &target) override;
+//     void attack2(Character &target) override;
+// };
 //Witch
 //Wizard
 //Fire Worm

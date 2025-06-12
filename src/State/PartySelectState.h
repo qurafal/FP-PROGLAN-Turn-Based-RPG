@@ -15,11 +15,9 @@ public:
 
     void handleEvent(sf::RenderWindow &window, sf::Event &event) override;
 
-    void update(Game& game) override;
+    void update() override;
 
     void render(sf::RenderWindow &window) override;
 
-    std::string getName() const override {
-        return "PartySelectState";
-    }
+    std::string getName() const override;
 };

@@ -2,9 +2,7 @@
 
 #include "../include/base.h"
 
-
 #include <memory>
-
 
 extern int globalAP;
 void resetGlobalAP();
@@ -16,14 +14,14 @@ typedef enum ENTITY_TYPE
     CONSTRUCT
 } ENTITY_TYPE;
 
-
 typedef enum ATTACK_TYPE
 {
     PHYSICAL = 0,
     MAGICAL
 } ATTACK_TYPE;
 
-typedef struct {
+typedef struct
+{
     std::string name;
     int APCost;
     ATTACK_TYPE attackType;
@@ -36,7 +34,7 @@ protected:
     std::string name;
     int hp, maxHp;
     int atk, def, mag, res;
-    ENTITY_TYPE ent_type; 
+    ENTITY_TYPE ent_type;
 
 public:
     Entity(const std::string &name, int hp, int atk, int def, int mag, int res, ENTITY_TYPE ent_type)
@@ -55,6 +53,8 @@ public:
             dmg -= res;
             break;
         }
+        if (dmg < 0)
+            dmg = 0; // Prevent healing
         hp -= dmg;
         if (hp < 0)
             hp = 0;
@@ -70,15 +70,14 @@ public:
     bool isDominant(ENTITY_TYPE otherType) const
     {
         if (ent_type == MORTAL && otherType == ETHEREAL)
-            return true; 
+            return true;
         if (ent_type == ETHEREAL && otherType == CONSTRUCT)
-            return true; 
+            return true;
         if (ent_type == CONSTRUCT && otherType == MORTAL)
-            return true; 
-        return false; 
+            return true;
+        return false;
     }
 
-    
     const std::string &getName() const { return name; }
     int getHP() const { return hp; }
     int getMaxHP() const { return maxHp; }
@@ -88,7 +87,6 @@ public:
     int getRES() const { return res; }
     ENTITY_TYPE getType() const { return ent_type; }
 
-    
     void setHP(int value) { hp = value; }
     void setATK(int value) { atk = value; }
     void setDEF(int value) { def = value; }

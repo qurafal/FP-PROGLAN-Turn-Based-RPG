@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../Entity/character.h"
 
 class Party

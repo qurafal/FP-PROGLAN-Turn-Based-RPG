@@ -24,6 +24,7 @@ class Game {
 
         void initWindow();
         void initVariables();
+        void initMusic();
 
 public:
 // Constructor and Destructor
@@ -45,6 +46,9 @@ public:
         delete state; 
         state = newState; 
         std::cout << "[DEBUG] Setting mew state set: " << (state ? state->getName() : "null") << std::endl;
+    }
+    void tempSetState(State* newState) {
+        state = newState; 
     }
     int getCurrentFloor() const {
         return currentFloor;

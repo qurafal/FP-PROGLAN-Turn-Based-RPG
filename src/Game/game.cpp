@@ -14,12 +14,19 @@ void Game::initWindow() {
 
     this->window = new sf::RenderWindow(this->videoMode, "Exploration 22", sf::Style::Titlebar | sf::Style::Close);
 }
-
+void Game::initMusic() {
+    if (!this->music.openFromFile("src/Assets/Music/Main Theme - Horsemen Approach .wav")) {
+        std::cerr << "Error loading music file!" << std::endl;
+    }
+    this->music.setLoop(true);
+    this->music.play();
+}
 
 Game::Game()
 {
     this->initVariables();
     this->initWindow();
+    this->initMusic();
     
 }
 
@@ -44,6 +51,7 @@ void Game::updateEvents()
     sf::Event event;
 
     state->handleEvent(*this->window, event);
+    state->update();
         
 }
 void Game::update()

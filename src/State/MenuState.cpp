@@ -66,7 +66,7 @@ void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
     }
 }
 
-void MenuState::update(Game &game)
+void MenuState::update()
 {
 
 }

@@ -16,7 +16,7 @@ public:
 
     void handleEvent(sf::RenderWindow &window, sf::Event &event) override;
 
-    void update(Game& game) override
+    void update() override
     {
         // Update logic for the second menu
     }

@@ -3,7 +3,6 @@
 
 #include "../Battle/party.h"
 #include "../Battle/enemy_group.h"
-#include "../Battle/battle_manager.h"
 
 
 #include "../Entity/character.h"

@@ -1,4 +1,5 @@
 #include "FloorState.h"
+#include "BattleState.h"
 #include "../Game/game.h"
 
 FloorState::FloorState(Game *game, int floor)
@@ -69,7 +70,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                         // If either node is already visited, do nothing
                         if (branchNodes[0]->isVisited() || branchNodes[1]->isVisited())
                         {
-                            // Both are considered visited, do nothing
+                            
                             return;
                         }
                         // Mark both as visited
@@ -84,11 +85,39 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                             node->setVisited(true);
                         }
                     }
+                    switch (branchNodes[selectedBranch]->getType())
+                    {
+                        case BATTLE:{
+                            
+                            //Lagi dibenerin 
+                            EnemyGroup enemies;
+                            
+                            game->tempSetState(new BattleState(game, std::move(enemies), this));
+                            return;
+                            break;
+                        }
+                        case EVENT:
+                        // std::cout << "[EVENT] " << branchNodes[0]->getName() << std::endl;
+                        // branchNodes[0]->setVisited(true);
+                        break;
+                        case SHOP:
+                        // std::cout << "[SHOP] " << branchNodes[0]->getName() << std::endl;
+                        // game->setState(new ShopState(game, branchNodes[0]->getName()));
+                        break;
+                        case BOSS:
+                        // std::cout << "[BOSS] " << branchNodes[0]->getName() << std::endl;
+                        // game->setState(new BattleState(game, branchNodes[0]->getName()));
+                        break;
+                        
+                        default:
+                        std::cout << "[UNKNOWN] " << branchNodes[0]->getName() << std::endl;
+                        break;
+                    }
+                    
                     if (selectedStep > maxVisitedStep)
                         maxVisitedStep = selectedStep;
                     selectedStep++;
                     selectedBranch = 0;
-
                     if (isBoss && branchNodes[0]->isVisited())
                     {
                         if (game->getCurrentFloor() < 5)
@@ -118,7 +147,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
     // You can add Enter to "visit" a node here
 }
 
-void FloorState::update(Game &game)
+void FloorState::update()
 {
     // You can add logic for visiting nodes, updating state, etc.
 }

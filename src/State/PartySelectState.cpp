@@ -53,7 +53,7 @@ void PartySelectState::handleEvent(sf::RenderWindow &window, sf::Event &event) {
     }
 }
 
-void PartySelectState::update(Game& game) {
+void PartySelectState::update() {
     // Update logic for the party selection state
 }
 void PartySelectState::render(sf::RenderWindow &window) {
@@ -103,4 +103,10 @@ void PartySelectState::render(sf::RenderWindow &window) {
     }
 
     
+}
+
+
+//Other Functions
+std::string PartySelectState::getName() const {
+    return "PartySelectState";
 }

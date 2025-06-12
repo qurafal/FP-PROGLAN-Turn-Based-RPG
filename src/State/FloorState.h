@@ -1,4 +1,5 @@
 #pragma once
+
 #include "SecondMenu.h"
 #include "../Floor/floor.h"
 
@@ -7,9 +8,11 @@ private:
     Game *game; // Pointer to the game instance
     Floor floor; // The floor instance
 
+    friend class BattleState; 
+    
     sf::Font font;
     sf::Text title;
-
+    
     
     int selectedStep = 0; // 
     int selectedBranch = 0;
@@ -22,7 +25,7 @@ private:
     FloorState(Game *game, int floor);
 
     void handleEvent(sf::RenderWindow &window, sf::Event &event) override;
-    void update(Game& game) override;
+    void update() override;
     void render(sf::RenderWindow &window) override;
 
     std::string getName() const override;
