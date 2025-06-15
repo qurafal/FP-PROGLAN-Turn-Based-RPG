@@ -44,12 +44,18 @@ void SecondMenu::handleEvent(sf::RenderWindow &window, sf::Event &event)
                 switch (selectedOption)
                 {
                 case 0:
+                    if (game->getParty().getMembers().empty())
+                    {
+                        std::cout << "[SELECT] No party members, cannot select party" << std::endl;
+                        return;
+                        break;
+                    }
                     std::cout << "[SELECT] Enter Node" << std::endl;
-                    game->setState(new FloorState(game, game->getCurrentFloor())); 
+                    game->setState(new FloorState(game, game->getCurrentFloor()));
                     return;
                     break;
                 case 1:
-                    
+
                     std::cout << "[SELECT] Party Select" << std::endl;
                     game->setState(new PartySelectState(game));
                     return;

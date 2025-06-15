@@ -1,4 +1,6 @@
 #include "floor.h"
+#include "../Battle/enemy_template.h"
+#include "../Battle/enemy_group.h"
 
 Floor::Floor(int currentFloor)
 {
@@ -15,16 +17,26 @@ std::unique_ptr<Node> Floor::generateRandomNodes(std::mt19937 &gen, bool& shopEx
         type = (dist(gen) % 2 == 0) ? BATTLE : EVENT;
     }
 
-    switch (type)
+    switch(type)
     {
-    case BATTLE:
-        return std::make_unique<BattleNode>(BATTLE, "Battle", "A fierce battle awaits!");
-    case SHOP:
+    case BATTLE: {
+        EnemyGroup group;
+        std::uniform_int_distribution<> enemyCountDist(2, 3); // 2 or 3 enemies
+        int numEnemies = enemyCountDist(gen);
+        std::uniform_int_distribution<> templateDist(0, ENEMY_TEMPLATES.size() - 1);
+        for (int i = 0; i < numEnemies; ++i) {
+            int idx = templateDist(gen);
+            group.addEnemy(ENEMY_TEMPLATES[idx]());
+        }
+        return std::make_unique<BattleNode>(BATTLE, "Battle", "A fierce battle awaits!", std::move(group));
+    }
+    case SHOP: {
         shopExists = true;
         return std::make_unique<ShopNode>(SHOP, "Shop", "A place to buy items.");
-
-    case EVENT:
+    }
+    case EVENT: {
         return std::make_unique<EventNode>(EVENT, "Event", "A mysterious event occurs.");
+    }
     }
     return nullptr;
 }

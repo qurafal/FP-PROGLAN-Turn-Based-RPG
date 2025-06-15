@@ -2,8 +2,8 @@
 #include "FloorState.h"
 #include "../Game/game.h"
 
-BattleState::BattleState(Game *game, EnemyGroup enemies, FloorState *floorState)
-    : game(game), enemies(std::move(enemies)), party(&game->getParty()), floorState(floorState)
+BattleState::BattleState(Game *game, EnemyGroup* enemies, FloorState *floorState)
+    : game(game), enemies(enemies), party(&game->getParty()), floorState(floorState)
 {
     // Load font and set up title text
     if (!font.loadFromFile("PixelOperator.ttf"))
@@ -68,18 +68,18 @@ void BattleState::handleEvent(sf::RenderWindow &window, sf::Event &event)
             }
             else if (phase == TARGET_SELECT)
             {
-                if (enemies.size() > 0)
+                if (enemies->size() > 0)
                 {
 
                     if (event.key.code == sf::Keyboard::Up)
-                        selectedEnemy = (selectedEnemy - 1 + enemies.size()) % enemies.size();
+                        selectedEnemy = (selectedEnemy - 1 + enemies->size()) % enemies->size();
                     if (event.key.code == sf::Keyboard::Down)
-                        selectedEnemy = (selectedEnemy + 1) % enemies.size();
+                        selectedEnemy = (selectedEnemy + 1) % enemies->size();
                     if (event.key.code == sf::Keyboard::Enter)
                     {
                         // Execute attack
                         Character *attacker = party->getMember(selectedParty);
-                        Enemy *target = enemies.getEnemy(selectedEnemy);
+                        Enemy *target = enemies->getEnemy(selectedEnemy);
                         if (attacker && attacker->isAlive() && target && target->isAlive())
                         {
                             std::cout << "[LOG] Executing action: " << actionList[selectedAction] << " on enemy " << selectedEnemy << std::endl;
@@ -122,9 +122,9 @@ void BattleState::update()
     if (phase == ENEMY_TURN)
     {
         // Each alive enemy attacks a random alive party member
-        for (size_t i = 0; i < enemies.size(); ++i)
+        for (size_t i = 0; i < enemies->size(); ++i)
         {
-            Enemy *enemy = enemies.getEnemy(i);
+            Enemy *enemy = enemies->getEnemy(i);
             if (enemy && enemy->isAlive())
             {
                 // Find a random alive party member
@@ -159,7 +159,7 @@ void BattleState::update()
     }
 
     // Check if one party is defeated
-    if (enemies.allDefeated())
+    if (enemies->allDefeated())
     {
         std::cout << "[LOG] All enemies defeated, returning to FloorState" << std::endl;
         Node *node = floorState->floor.getNode(floorState->selectedStep, floorState->selectedBranch);
@@ -212,9 +212,9 @@ void BattleState::render(sf::RenderWindow &window)
     }
 
     // Render enemies
-    for (size_t i = 0; i < enemies.size(); ++i)
+    for (size_t i = 0; i < enemies->size(); ++i)
     {
-        Enemy *enemy = enemies.getEnemy(i);
+        Enemy *enemy = enemies->getEnemy(i);
         if (enemy)
         {
             sf::Text enemyText(enemy->getName() + " HP: " + std::to_string(enemy->getHP()), font, 24);

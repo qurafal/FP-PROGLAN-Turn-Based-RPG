@@ -6,7 +6,7 @@ class Game; //forward declaration
 
 class State{
 public:
-    virtual ~State();
+    virtual ~State() = default;
 
     // Pure virtual functions to be implemented by derived states
     virtual void handleEvent(sf::RenderWindow& window, sf::Event& event) = 0;

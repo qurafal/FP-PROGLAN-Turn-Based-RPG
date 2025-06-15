@@ -1,4 +1,3 @@
-#pragma once
 #include "enemies.h"
 #include "character.h"
 

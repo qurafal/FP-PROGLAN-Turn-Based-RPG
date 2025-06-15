@@ -70,7 +70,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                         // If either node is already visited, do nothing
                         if (branchNodes[0]->isVisited() || branchNodes[1]->isVisited())
                         {
-                            
+
                             return;
                         }
                         // Mark both as visited
@@ -87,33 +87,36 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                     }
                     switch (branchNodes[selectedBranch]->getType())
                     {
-                        case BATTLE:{
-                            
-                            //Lagi dibenerin 
-                            EnemyGroup enemies;
-                            
-                            game->tempSetState(new BattleState(game, std::move(enemies), this));
+                    case BATTLE:
+                    {
+
+                        Node *node = floor.getNode(selectedStep, selectedBranch);
+                        BattleNode *battleNode = dynamic_cast<BattleNode *>(node);
+                        if (battleNode)
+                        {
+                            game->tempSetState(new BattleState(game, &battleNode->getEnemies(), this));
                             return;
-                            break;
                         }
-                        case EVENT:
+                        break;
+                    }
+                    case EVENT:
                         // std::cout << "[EVENT] " << branchNodes[0]->getName() << std::endl;
                         // branchNodes[0]->setVisited(true);
                         break;
-                        case SHOP:
+                    case SHOP:
                         // std::cout << "[SHOP] " << branchNodes[0]->getName() << std::endl;
                         // game->setState(new ShopState(game, branchNodes[0]->getName()));
                         break;
-                        case BOSS:
+                    case BOSS:
                         // std::cout << "[BOSS] " << branchNodes[0]->getName() << std::endl;
                         // game->setState(new BattleState(game, branchNodes[0]->getName()));
                         break;
-                        
-                        default:
+
+                    default:
                         std::cout << "[UNKNOWN] " << branchNodes[0]->getName() << std::endl;
                         break;
                     }
-                    
+
                     if (selectedStep > maxVisitedStep)
                         maxVisitedStep = selectedStep;
                     selectedStep++;

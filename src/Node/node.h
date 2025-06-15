@@ -25,6 +25,8 @@ public:
     std::string getName() {return name;}
     void setName(const std::string& newName) {name = newName;}
 
+    virtual ~Node() = default;
+
     std::string getDescription() {return description;}
     void setDescription(const std::string& newDescription) {description = newDescription;}
 

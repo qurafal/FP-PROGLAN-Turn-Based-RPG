@@ -13,7 +13,7 @@ class BattleState : public State {
 private:
     Game *game; 
     Party *party; // Pointer biar stat nya tetep konsisten
-    EnemyGroup enemies; 
+    EnemyGroup *enemies; 
 
     FloorState *floorState; // Pointer to the floor state for returning after battle
 
@@ -37,7 +37,7 @@ private:
     int turn = 0; 
 
 public:
-    BattleState(Game *game, EnemyGroup enemies, FloorState *floorState);
+    BattleState(Game *game, EnemyGroup* enemies, FloorState *floorState);
     void handleEvent(sf::RenderWindow &window, sf::Event &event) override;
     void update() override;
     void render(sf::RenderWindow &window) override;
