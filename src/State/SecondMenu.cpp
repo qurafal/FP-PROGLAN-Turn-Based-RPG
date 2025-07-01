@@ -5,6 +5,11 @@
 SecondMenu::SecondMenu(Game *game)
     : game(game)
 {
+    if (!texture.loadFromFile("src/Assets/Img/SecondMenu/SecondMenu.png"))
+    {
+        throw std::runtime_error("Failed to load background texture");
+    }
+    backgroundSprite.setTexture(texture);
     // Load font and set up title text
     if (!font.loadFromFile("PixelOperator.ttf"))
     {
@@ -75,7 +80,9 @@ void SecondMenu::handleEvent(sf::RenderWindow &window, sf::Event &event)
 
 void SecondMenu::render(sf::RenderWindow &window)
 {
-
+    backgroundSprite.setScale(1.6f, 1.6f);
+    backgroundSprite.setPosition(-300, -650);
+    window.draw(backgroundSprite);
     window.draw(title);
 
     for (int i = 0; i < 3; ++i)

@@ -9,6 +9,16 @@ private:
     sf::Text title;
     int selectedOption = 0;
     std::string characters[4] = {"Arthesa", "Ahmed", "Hamilla", "Perkia"};
+
+    sf::Texture background;
+    sf::Sprite backgroundSprite;
+
+    sf::Texture highlightText;
+    sf::Sprite highlightTextSprite;
+
+    sf::Texture selectedBox;
+    sf::Sprite selectedBoxSprite;
+    
 public:
     PartySelectState(Game *game);
 

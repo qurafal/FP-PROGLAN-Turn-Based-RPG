@@ -6,4 +6,5 @@
 #include <SFML/Audio.hpp>
 #include <memory>
 
-#define KEY_PRESSED event.key.code == sf::Keyboard::  
+extern sf::Texture texture;
+extern sf::Sprite backgroundSprite;

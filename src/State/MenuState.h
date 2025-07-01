@@ -12,6 +12,9 @@ private:
     sf::Text title;
     int selectedOption = 0;
     std::string options[2] = {"Begin Exploration", "Exit"};
+
+    sf::Texture texture;
+    sf::Sprite backgroundSprite;
     
 
 public:

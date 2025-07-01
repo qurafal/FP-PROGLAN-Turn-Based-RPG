@@ -2,12 +2,19 @@
 #include "SecondMenu.h"
 #include "../Game/game.h"
 
-
 class SecondMenu; // Forward declaration
 
-MenuState::MenuState(Game* game)
-    : game(game)
+
+MenuState::MenuState(Game *game)
+: game(game)
 {
+    
+    if (!texture.loadFromFile("src/Assets/Img/MainMenu/MainMenu.png"))
+    {
+        throw std::runtime_error("Failed to load background texture");
+    }
+    backgroundSprite.setTexture(texture);
+    
     // Load font and set up title text
     if (!font.loadFromFile("PixelOperator.ttf"))
     {
@@ -18,7 +25,6 @@ MenuState::MenuState(Game* game)
     title.setCharacterSize(50);
     title.setFillColor(sf::Color::White);
     title.setPosition(100, 100); // Set position as needed
-    
 }
 
 void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
@@ -68,12 +74,13 @@ void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
 
 void MenuState::update()
 {
-
 }
 
 void MenuState::render(sf::RenderWindow &window)
 {
-
+    backgroundSprite.setPosition(0, -200); 
+    backgroundSprite.setScale(1.0f, 1.0f);
+    window.draw(backgroundSprite); 
     window.draw(title);
 
     for (int i = 0; i < 2; ++i)
