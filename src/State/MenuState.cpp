@@ -56,7 +56,7 @@ void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                 {
                 case 0:
                     std::cout << "[SELECT] Begin Exploration" << std::endl;
-                    game->setState(new SecondMenu(game)); // Assuming you have a SecondMenu state
+                    game->setState(new SecondMenu(game, nullptr)); // Assuming you have a SecondMenu state
                     return;
                     break;
                 case 1:

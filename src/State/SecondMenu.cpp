@@ -2,8 +2,8 @@
 #include "../Game/game.h"
 #include "PartySelectState.h"
 
-SecondMenu::SecondMenu(Game *game)
-    : game(game)
+SecondMenu::SecondMenu(Game *game, FloorState *floorState)
+    : game(game), floorState(floorState)
 {
     if (!texture.loadFromFile("src/Assets/Img/SecondMenu/SecondMenu.png"))
     {
@@ -56,7 +56,12 @@ void SecondMenu::handleEvent(sf::RenderWindow &window, sf::Event &event)
                         break;
                     }
                     std::cout << "[SELECT] Enter Node" << std::endl;
-                    game->setState(new FloorState(game, game->getCurrentFloor()));
+                    if(floorState){
+                        game->setState(new FloorState(game, game->getCurrentFloor()));
+                    }else{
+                        new FloorState(game, game->getCurrentFloor());
+                        game->setState(new FloorState(game, game->getCurrentFloor()));
+                    }
                     return;
                     break;
                 case 1:

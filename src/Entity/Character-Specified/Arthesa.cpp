@@ -2,53 +2,62 @@
 
 Arthesa::Arthesa() : Character("Arthesa", 100, 20, 10, 15, 5, MORTAL) {}
 
-void Arthesa::baseAttack(Enemy &target, int globalAP)
+int Arthesa::baseAttack(Enemy &target, int globalAP)
 {
-    Action baseAttack = {"Skill",2, PHYSICAL};  
+    Action action = {"Skill",2, PHYSICAL};  
     if (target.isAlive() && globalAP >= 1)
     {
+        globalAP -= action.APCost;
         int damage = atk;
-        target.takeDamage(damage, baseAttack.attackType);
+        target.takeDamage(damage, action.attackType);
+        return action.APCost; 
     }
+    return 0; 
 }
 
-void Arthesa::skill1(Enemy &target, int globalAP)
+int Arthesa::skill1(Enemy &target, int globalAP)
 {
-    Action baseAttack = {"Skill",2, PHYSICAL}; 
+    Action action = {"Skill",2, PHYSICAL}; 
 
-    if (target.isAlive(), globalAP >= baseAttack.APCost)
+    if (target.isAlive()&& globalAP >= action.APCost)
     {
-        globalAP -= baseAttack.APCost;      
+        globalAP -= action.APCost;      
         int damage = atk;
         int breakAmount = 10;
 
         target.increaseBreakGauge(breakAmount); 
-        target.takeDamage(damage, baseAttack.attackType);
+        target.takeDamage(damage, action.attackType);
+        return action.APCost; 
     }
+    return 0;
 }
 
-void Arthesa::skill2(Enemy &target, int globalAP) 
+int Arthesa::skill2(Enemy &target, int globalAP) 
 {
-    Action baseAttack = {"Skill",2, PHYSICAL}; 
+    Action action = {"Skill",2, PHYSICAL}; 
 
-    if (target.isAlive(), globalAP >= baseAttack.APCost)
+    if (target.isAlive()&& globalAP >= action.APCost)
     {
-        globalAP -= baseAttack.APCost;      
+        globalAP -= action.APCost;      
         int damage = atk;
 
-        target.takeDamage(damage, baseAttack.attackType);
+        target.takeDamage(damage, action.attackType);
+        return action.APCost; 
     }
+    return 0;
 }
 
-void Arthesa::skill3(Entity &target, int globalAP) 
+int Arthesa::skill3(Entity &target, int globalAP) 
 {
-    Action baseAttack = {"Skill",5, PHYSICAL}; 
+    Action action = {"Skill",5, PHYSICAL}; 
 
-    if (target.isAlive(), globalAP >= baseAttack.APCost)
+    if (target.isAlive()&& globalAP >= action.APCost)
     {
-        globalAP -= baseAttack.APCost;      
+        globalAP -= action.APCost;      
         int damage = atk;
 
-        target.takeDamage(damage, baseAttack.attackType);
+        target.takeDamage(damage, action.attackType);
+        return action.APCost; 
     }
+    return 0;
 }

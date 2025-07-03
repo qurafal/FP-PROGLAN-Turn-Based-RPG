@@ -78,7 +78,7 @@ void PartySelectState::handleEvent(sf::RenderWindow &window, sf::Event &event)
             else if (event.key.code == sf::Keyboard::Escape && game->getParty().size() > 0)
             {
                 // Exit party selection
-                game->setState(new SecondMenu(game));
+                game->setState(new SecondMenu(game, nullptr));
             }
         }
     }

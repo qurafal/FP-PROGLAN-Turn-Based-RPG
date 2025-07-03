@@ -2,7 +2,7 @@
 #include "FloorState.h"
 #include "../Game/game.h"
 
-BattleState::BattleState(Game *game, EnemyGroup* enemies, FloorState *floorState)
+BattleState::BattleState(Game *game, EnemyGroup *enemies, FloorState *floorState)
     : game(game), enemies(enemies), party(&game->getParty()), floorState(floorState)
 {
     // Load font and set up title text
@@ -10,6 +10,47 @@ BattleState::BattleState(Game *game, EnemyGroup* enemies, FloorState *floorState
     {
         throw std::runtime_error("Failed to load font");
     }
+
+    // Load background
+    if (!backgroundTexture.loadFromFile("src/Assets/Img/BattleState/BattleBackground.png"))
+    {
+        std::cerr << "Failed to load battle background" << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setScale(.6f, .6f);
+
+    // Load character textures
+    std::string characterPaths[4] = {
+        "src/Assets/Img/BattleState/Arthesa/Idle.png",
+        "src/Assets/Img/BattleState/Arthesa/Idle.png",
+        "src/Assets/Img/BattleState/Arthesa/Idle.png",
+        "src/Assets/Img/BattleState/Arthesa/Idle.png"};
+
+    for (int i = 0; i < 4; ++i)
+    {
+        if (!characterTexture[i].loadFromFile(characterPaths[i]))
+        {
+            std::cerr << "Failed to load character: " << characterPaths[i] << std::endl;
+        }
+        characterSprites[i].setTexture(characterTexture[i]);
+    }
+    
+    // Load enemy textures based on actual enemies
+    for (size_t i = 0; i < enemies->size() && i < 6; ++i)
+    {
+        Enemy *enemy = enemies->getEnemy(i);
+        if (enemy)
+        {
+            std::string enemyPath = "src/Assets/Img/Enemies/" + enemy->getName() + ".png";
+            if (!enemyTexture[i].loadFromFile(enemyPath))
+            {
+                std::cerr << "Failed to load enemy: " << enemyPath << std::endl;
+            }
+            enemySprites[i].setTexture(enemyTexture[i]);
+            enemySprites[i].setScale(1.5f, 1.5f);
+        }
+    }
+    
     title.setFont(font);
     title.setString("Battle State");
     title.setCharacterSize(50);
@@ -26,39 +67,44 @@ void BattleState::handleEvent(sf::RenderWindow &window, sf::Event &event)
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            if (event.key.code == sf::Keyboard::Escape)
-            {
-                game->setState(new SecondMenu(game));
-                return;
-            }
-
-            // --- PLAYER TURN ---
-            if (phase == PLAYER_SELECT)
-            {
-                if (party->size() > 0)
+            // if (event.key.code == sf::Keyboard::Escape)
+            // {
+                //     game->setState(new SecondMenu(game, this->floorState));
+                //     return;
+                // }
+                
+                // --- PLAYER TURN ---
+                if (phase == PLAYER_SELECT)
                 {
-
-                    if (event.key.code == sf::Keyboard::Up)
-                        selectedParty = (selectedParty - 1 + party->size()) % party->size();
-                    if (event.key.code == sf::Keyboard::Down)
-                        selectedParty = (selectedParty + 1) % party->size();
-                    if (event.key.code == sf::Keyboard::Enter)
+                    if (party->size() > 0)
                     {
-                        if (party->getMember(selectedParty)->isAlive())
+                        
+                        if (event.key.code == sf::Keyboard::Up)
+                        selectedParty = (selectedParty - 1 + party->size()) % party->size();
+                        if (event.key.code == sf::Keyboard::Down)
+                        selectedParty = (selectedParty + 1) % party->size();
+                        if (event.key.code == sf::Keyboard::Enter)
                         {
-                            std::cout << "[LOG] Party member selected: " << selectedParty << std::endl;
-                            phase = ACTION_SELECT;
-                            std::cout << "[PHASE]: " << phase << std::endl;
+                            if (party->getMember(selectedParty)->isAlive())
+                            {
+                                std::cout << "[LOG] Party member selected: " << selectedParty << std::endl;
+                                phase = ACTION_SELECT;
+                                std::cout << "[PHASE]: " << phase << std::endl;
+                            }
                         }
                     }
+                    if (globalAP <= 0 || event.key.code == sf::Keyboard::F)
+                    {
+                        
+                        phase = ENEMY_TURN;
+                    }
                 }
-            }
-            else if (phase == ACTION_SELECT)
+                else if (phase == ACTION_SELECT)
             {
                 if (event.key.code == sf::Keyboard::Up)
-                    selectedAction = (selectedAction - 1 + actionList.size()) % actionList.size();
+                selectedAction = (selectedAction - 1 + actionList.size()) % actionList.size();
                 if (event.key.code == sf::Keyboard::Down)
-                    selectedAction = (selectedAction + 1) % actionList.size();
+                selectedAction = (selectedAction + 1) % actionList.size();
                 if (event.key.code == sf::Keyboard::Enter)
                 {
                     std::cout << "[LOG] Action selected: " << actionList[selectedAction] << std::endl;
@@ -70,11 +116,11 @@ void BattleState::handleEvent(sf::RenderWindow &window, sf::Event &event)
             {
                 if (enemies->size() > 0)
                 {
-
+                    
                     if (event.key.code == sf::Keyboard::Up)
-                        selectedEnemy = (selectedEnemy - 1 + enemies->size()) % enemies->size();
+                    selectedEnemy = (selectedEnemy - 1 + enemies->size()) % enemies->size();
                     if (event.key.code == sf::Keyboard::Down)
-                        selectedEnemy = (selectedEnemy + 1) % enemies->size();
+                    selectedEnemy = (selectedEnemy + 1) % enemies->size();
                     if (event.key.code == sf::Keyboard::Enter)
                     {
                         // Execute attack
@@ -87,28 +133,40 @@ void BattleState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                             {
                                 if (globalAP >= 1)
                                 {
-                                    attacker->baseAttack(*target, globalAP);
-                                    globalAP -= 1;
+                                    int APCost = attacker->baseAttack(*target, globalAP);
+                                    globalAP -= APCost;
                                     std::cout << "[LOG] baseAttack executed, AP left: " << globalAP << std::endl;
                                 }
                             }
                             else if (selectedAction == 1)
                             {
-                                attacker->skill1(*target, globalAP);
+                                int APCost = attacker->skill1(*target, globalAP);
+                                globalAP -= APCost;
+                                
                                 std::cout << "[LOG] skill1 executed, AP left: " << globalAP << std::endl;
                             }
                             else if (selectedAction == 2)
                             {
-                                attacker->skill2(*target, globalAP);
+                                int APCost = attacker->skill2(*target, globalAP);
+                                globalAP -= APCost;
+                                
                                 std::cout << "[LOG] skill2 executed, AP left: " << globalAP << std::endl;
                             }
                             else if (selectedAction == 3)
                             {
-                                attacker->skill3(*target, globalAP);
+                                int APCost = attacker->skill3(*target, globalAP);
+                                globalAP -= APCost;
+                                
                                 std::cout << "[LOG] skill3 executed, AP left: " << globalAP << std::endl;
                             }
                         }
-                        phase = ENEMY_TURN;
+                        
+                        if (globalAP <= 0 || event.key.code == sf::Keyboard::F)
+                        {
+                            
+                            phase = ENEMY_TURN;
+                        }
+                        phase = PLAYER_SELECT;
                         std::cout << "[PHASE]: " << phase << std::endl;
                     }
                 }
@@ -130,8 +188,8 @@ void BattleState::update()
                 // Find a random alive party member
                 std::vector<int> aliveIndices;
                 for (size_t j = 0; j < party->size(); ++j)
-                    if (party->getMember(j)->isAlive())
-                        aliveIndices.push_back(j);
+                if (party->getMember(j)->isAlive())
+                aliveIndices.push_back(j);
                 if (!aliveIndices.empty())
                 {
                     int targetIdx = aliveIndices[rand() % aliveIndices.size()];
@@ -157,22 +215,28 @@ void BattleState::update()
         phase = PLAYER_SELECT;
         std::cout << "[PHASE]: " << phase << std::endl;
     }
-
+    
     // Check if one party is defeated
     if (enemies->allDefeated())
     {
         std::cout << "[LOG] All enemies defeated, returning to FloorState" << std::endl;
-        Node *node = floorState->floor.getNode(floorState->selectedStep, floorState->selectedBranch);
-        if (node){
-            node->setVisited(true);
-            floorState->selectedStep++;
-            floorState->maxVisitedStep++;
+        
+        if(floorState){
+            
+            Node *node = floorState->floor.getNode(floorState->selectedStep, floorState->selectedBranch);
+            if (node)
+            {
+                node->setVisited(true);
+                floorState->selectedStep++;
+                floorState->maxVisitedStep++;
+            }
+            game->setState(floorState);
         }
-        game->setState(this->floorState);
+        return;
     }
     if (party->allDefeated())
     {
-
+        
         std::cout << "All party members defeated! Game Over!" << std::endl;
         game->setState(new MenuState(game)); // Sementara ke menustate
     }
@@ -180,33 +244,40 @@ void BattleState::update()
 void BattleState::render(sf::RenderWindow &window)
 {
     window.clear(sf::Color(20, 20, 40));
+    window.draw(backgroundSprite);
     window.draw(title);
-
+    
     // Render AP
     sf::Text apText("AP: " + std::to_string(globalAP), font, 24);
     apText.setPosition(50, 120);
     apText.setFillColor(sf::Color::Cyan);
     window.draw(apText);
-
+    
     // Render party members
     for (size_t i = 0; i < party->size(); ++i)
     {
         Character *member = party->getMember(i);
         if (member)
         {
-            sf::Text memberText(member->getName() + " HP: " + std::to_string(member->getHP()), font, 24);
-            memberText.setPosition(50, 200 + i * 30);
-
+            //DRAW TULISAN NYA
+            sf::Text memberText(member->getName() + " HP: " + std::to_string(member->getHP()), font, 20);
+            memberText.setPosition(25 + i *10, 320 + i * 80);
+            
             // Highlight selected party member
             if ((phase == PLAYER_SELECT && (int)i == selectedParty) ||
-                (phase == TARGET_SELECT && (int)i == selectedParty && phase != ACTION_SELECT))
+            (phase == TARGET_SELECT && (int)i == selectedParty && phase != ACTION_SELECT))
             {
                 memberText.setFillColor(sf::Color::Yellow);
             }
             else
             {
                 memberText.setFillColor(member->isAlive() ? sf::Color::White : sf::Color::Red);
-            }
+                }
+                //GAMBAR SPRITE CHARACTER
+            characterSprites[i].setTextureRect(sf::IntRect(0, 0, 180, 180));
+            characterSprites[i].setPosition(40 + i*20, 230 + i * 50);
+            characterSprites[i].setScale(1.5f + i * 0.2f, 1.5f+ i * 0.2f); 
+            window.draw(characterSprites[i]);
             window.draw(memberText);
         }
     }
@@ -218,7 +289,7 @@ void BattleState::render(sf::RenderWindow &window)
         if (enemy)
         {
             sf::Text enemyText(enemy->getName() + " HP: " + std::to_string(enemy->getHP()), font, 24);
-            enemyText.setPosition(400, 200 + i * 30);
+            enemyText.setPosition(430, 200 + i * 30);
             // Highlight selected enemy during TARGET_SELECT
             if (phase == TARGET_SELECT && (int)i == selectedEnemy)
             {
@@ -234,21 +305,46 @@ void BattleState::render(sf::RenderWindow &window)
     // render action selection
     if (phase == ACTION_SELECT)
     {
-        for (size_t i = 0; i < actionList.size(); ++i)
+         Character *selectedCharacter = party->getMember(selectedParty);
+        if (selectedCharacter)
         {
-            sf::Text actionText(actionList[i], font, 28);
-            actionText.setPosition(50, 400 + i * 40);
-            if ((int)i == selectedAction)
+            
+            for (size_t i = 0; i < actionList.size(); ++i)
             {
-                actionText.setFillColor(sf::Color::Yellow); // Highlight selected action
+                int apCost = 0;
+                
+                // DAPETIN AP COST
+                if (Arthesa* arthesa = dynamic_cast<Arthesa*>(selectedCharacter))
+                {
+                    apCost = arthesa->getAPCost(i);
+                }
+                else if (Perkia* perkia = dynamic_cast<Perkia*>(selectedCharacter))
+                {
+                    apCost = perkia->getAPCost(i);
+                }
+                else if (Ahmed* ahmed = dynamic_cast<Ahmed*>(selectedCharacter))
+                {
+                    apCost = ahmed->getAPCost(i);
+                }
+                else if (Hamilla* hamilla = dynamic_cast<Hamilla*>(selectedCharacter))
+                {
+                    apCost = hamilla->getAPCost(i);
+                }
+                //TEXT ACTION
+                sf::Text actionText(actionList[i] + "(" + std::to_string(apCost) + ")", font, 28);
+                actionText.setPosition(300, 200 + i * 40);
+                if ((int)i == selectedAction)
+                {
+                    actionText.setFillColor(sf::Color::Yellow); // Highlight selected action
+                }
+                else
+                {
+                    actionText.setFillColor(sf::Color::White);
+                }
+                window.draw(actionText);
             }
-            else
-            {
-                actionText.setFillColor(sf::Color::White);
-            }
-            window.draw(actionText);
         }
     }
-
+        
     window.display();
 }

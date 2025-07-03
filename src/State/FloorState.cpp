@@ -7,7 +7,7 @@ FloorState::FloorState(Game *game, int floor)
 {
 
     // Load font and set up title text
-    if (!font.loadFromFile("PixelOperator.ttf"))
+    if (!font.loadFromFile("OldEnglishGothicPixelRegular.ttf"))
     {
         throw std::runtime_error("Failed to load font");
     }
@@ -133,7 +133,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                         }
                         else
                         {
-                            // Game finished, go to menu or show win screen
+                            
                             game->setState(new MenuState(game));
                             return;
                         }
@@ -141,18 +141,18 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                 }
             }
         }
-        if (event.key.code == sf::Keyboard::Escape)
-        {
-            game->setState(new SecondMenu(game));
-            return;
-        }
+        // if (event.key.code == sf::Keyboard::Escape)
+        // {
+        //     game->tempSetState(new SecondMenu(game, this));
+        //     return;
+        // }
     }
-    // You can add Enter to "visit" a node here
+    
 }
 
 void FloorState::update()
 {
-    // You can add logic for visiting nodes, updating state, etc.
+    
 }
 
 void FloorState::render(sf::RenderWindow &window)
