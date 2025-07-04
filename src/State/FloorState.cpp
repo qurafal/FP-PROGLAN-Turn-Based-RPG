@@ -1,12 +1,13 @@
 #include "FloorState.h"
 #include "BattleState.h"
+#include "EventState.h"
 #include "../Game/game.h"
 
 FloorState::FloorState(Game *game, int floor)
     : game(game), floor(game->getCurrentFloor())
 {
 
-    // Load font and set up title text
+    
     if (!font.loadFromFile("OldEnglishGothicPixelRegular.ttf"))
     {
         throw std::runtime_error("Failed to load font");
@@ -15,7 +16,7 @@ FloorState::FloorState(Game *game, int floor)
     title.setString("Exploration 22 - Floor " + std::to_string(game->getCurrentFloor()));
     title.setCharacterSize(50);
     title.setFillColor(sf::Color::White);
-    title.setPosition(100, 100); // Set position as needed
+    title.setPosition(100, 100); 
 }
 
 void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
@@ -58,7 +59,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
             {
                 if (selectedStep <= maxVisitedStep + 1)
                 {
-                    // Mark as visited
+                    // Tandain kalo udah lewat
                     Node *node = floor.getNode(selectedStep, 0);
                     std::cout << "[VISIT] " << node->getName() << std::endl;
 
@@ -66,14 +67,12 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                     bool isBoss = branchNodes[0]->getType() == BOSS;
 
                     if (branchNodes.size() > 1)
-                    {
-                        // If either node is already visited, do nothing
+                    {      
                         if (branchNodes[0]->isVisited() || branchNodes[1]->isVisited())
                         {
 
                             return;
                         }
-                        // Mark both as visited
                         branchNodes[0]->setVisited(true);
                         branchNodes[1]->setVisited(true);
                     }
@@ -100,10 +99,20 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                         break;
                     }
                     case EVENT:
-                        // std::cout << "[EVENT] " << branchNodes[0]->getName() << std::endl;
-                        // branchNodes[0]->setVisited(true);
+                    {
+
+                        std::cout << "[EVENT] " << branchNodes[0]->getName() << std::endl;
+                        Node *node = floor.getNode(selectedStep, selectedBranch);
+                        EventNode *eventNode = dynamic_cast<EventNode *>(node);
+                        if (eventNode)
+                        {
+                            game->tempSetState(new EventState(game, this));
+                            return;
+                        }
                         break;
-                    case SHOP:
+                    }
+                    //SHOP SAMA BOSS BELOM JADI
+                    case SHOP: 
                         // std::cout << "[SHOP] " << branchNodes[0]->getName() << std::endl;
                         // game->setState(new ShopState(game, branchNodes[0]->getName()));
                         break;
@@ -141,6 +150,7 @@ void FloorState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                 }
             }
         }
+        // Escape tak komen biar gak bisa balik ke menu, by design bukan ada error
         // if (event.key.code == sf::Keyboard::Escape)
         // {
         //     game->tempSetState(new SecondMenu(game, this));
@@ -173,18 +183,18 @@ void FloorState::render(sf::RenderWindow &window)
             nodeText.setPosition(baseX + step * stepGap, baseY + branch * 40);
 
             if (static_cast<int>(step) == selectedStep && static_cast<int>(branch) == selectedBranch && !branchVisited)
-                nodeText.setFillColor(sf::Color::Yellow); // currently selected
+                nodeText.setFillColor(sf::Color::Yellow); 
             else if (branchVisited || node->isVisited())
-                nodeText.setFillColor(sf::Color(60, 60, 60)); // already visited (branch or single)
+                nodeText.setFillColor(sf::Color(60, 60, 60)); 
             else if (static_cast<int>(step) > maxVisitedStep + 1)
-                nodeText.setFillColor(sf::Color(100, 100, 100)); // locked/unvisited
+                nodeText.setFillColor(sf::Color(100, 100, 100)); 
             else
-                nodeText.setFillColor(sf::Color::White); // available but not selected
+                nodeText.setFillColor(sf::Color::White); 
             window.draw(nodeText);
         }
     }
 
-    // Optionally, show info about the selected node
+    
     Node *selectedNode = floor.getNode(selectedStep, 0);
     if (selectedNode)
     {

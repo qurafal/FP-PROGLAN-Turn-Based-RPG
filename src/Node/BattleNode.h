@@ -1,7 +1,7 @@
 #pragma once
 #include "node.h"
 
-#include "../Battle/enemy_group.h"   // <-- Make sure this is here!
+#include "../Battle/enemy_group.h" 
 #include "../Entity/enemies.h" 
 
 class BattleNode : public Node {

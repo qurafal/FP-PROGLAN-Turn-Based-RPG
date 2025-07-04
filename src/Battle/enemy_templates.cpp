@@ -1,6 +1,6 @@
 #include "enemy_template.h"
 
-// Factory function definitions
+// Factory pattern
 std::unique_ptr<Enemy> makeGoblin() {
     return std::make_unique<Enemy>(
         "Goblin", 50, 15, 5, 0, 0, ETHEREAL, 100,
@@ -41,19 +41,13 @@ std::unique_ptr<Enemy> makeFireWorm() {
     );
 }
 
-std::unique_ptr<Enemy> makeSlime() {
-    return std::make_unique<Enemy>(
-        "Slime", 30, 8, 2, 0, 0, ETHEREAL, 50,
-        [](Character& target) { target.takeDamage(8, PHYSICAL); },
-        [](Character& target) { target.takeDamage(11, PHYSICAL); }
-    );
-}
+
 
 const std::vector<std::function<std::unique_ptr<Enemy>()>> ENEMY_TEMPLATES = {
     makeGoblin,
     makeSkeleton,
     makeWitch,
     makeWizard,
-    makeFireWorm,
-    makeSlime
+    makeFireWorm
+   
 };

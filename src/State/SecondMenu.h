@@ -6,8 +6,8 @@ class FloorState; // Forward declaration
 class SecondMenu : public State
 {
 private:
-    Game *game; // Pointer to the game instance
-    FloorState *floorState; // Pointer to the floor state for returning after battle
+    Game *game; 
+    FloorState *floorState; // Biar bisa balik ke FloorState
 
 
     sf::Font font;
@@ -25,7 +25,7 @@ public:
 
     void update() override
     {
-        // Update logic for the second menu
+        
     }
 
     void render(sf::RenderWindow &window) override;

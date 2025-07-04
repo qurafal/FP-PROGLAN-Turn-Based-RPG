@@ -44,7 +44,7 @@ public:
             case 1: return 2; // Skill 1
             case 2: return 2; // Skill 2
             case 3: return 5; // Skill 3
-            default: return 0; // Invalid action index
+            default: return 0;
         }
     }
 };
@@ -64,7 +64,7 @@ public:
             case 1: return 2; // Skill 1
             case 2: return 2; // Skill 2
             case 3: return 5; // Skill 3
-            default: return 0; // Invalid action index
+            default: return 0; 
         }
     }
 };
@@ -84,7 +84,7 @@ public:
             case 1: return 2; // Skill 1
             case 2: return 2; // Skill 2
             case 3: return 5; // Skill 3
-            default: return 0; // Invalid action index
+            default: return 0; 
         }
     }
 };
@@ -104,7 +104,7 @@ public:
             case 1: return 2; // Skill 1
             case 2: return 2; // Skill 2
             case 3: return 5; // Skill 3
-            default: return 0; // Invalid action index
+            default: return 0; 
         }
     }
 };

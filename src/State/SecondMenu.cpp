@@ -10,7 +10,7 @@ SecondMenu::SecondMenu(Game *game, FloorState *floorState)
         throw std::runtime_error("Failed to load background texture");
     }
     backgroundSprite.setTexture(texture);
-    // Load font and set up title text
+    // setup tulisan
     if (!font.loadFromFile("PixelOperator.ttf"))
     {
         throw std::runtime_error("Failed to load font");
@@ -19,7 +19,7 @@ SecondMenu::SecondMenu(Game *game, FloorState *floorState)
     title.setString("Now Exploring");
     title.setCharacterSize(50);
     title.setFillColor(sf::Color::White);
-    title.setPosition(100, 100); // Set position as needed
+    title.setPosition(100, 100); 
 }
 
 void SecondMenu::handleEvent(sf::RenderWindow &window, sf::Event &event)
@@ -45,6 +45,7 @@ void SecondMenu::handleEvent(sf::RenderWindow &window, sf::Event &event)
             }
             else if (event.key.code == sf::Keyboard::Enter)
             {
+                //Masuk ke pilihan
                 std::cout << "[INPUT] TRIGGER" << std::endl;
                 switch (selectedOption)
                 {

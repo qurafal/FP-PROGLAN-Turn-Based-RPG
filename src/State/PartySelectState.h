@@ -3,7 +3,7 @@
 
 class PartySelectState : public State {
 private:
-    Game *game; // Pointer to the game instance
+    Game *game; 
 
     sf::Font font;
     sf::Text title;

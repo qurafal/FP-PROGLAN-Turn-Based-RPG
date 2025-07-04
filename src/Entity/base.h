@@ -47,7 +47,7 @@ public:
         switch (attackType)
         {
         case PHYSICAL:
-            dmg -= def; // MASIH PERLU PENGECEKAN KARENA KALO DEF > ATK, Dmg bisa negatif DAN MALAH NGEHEAL, CARI LOGIC YANG TEPAT
+            dmg -= def; // MASIH PERLU PENGECEKAN KARENA KALO DEF > ATK, Dmg bisa negatif DAN MALAH NGEHEAL, // Update udah di bawah tpai jadi kebal bukan ngurangin dikit
             break;
         case MAGICAL:
             dmg -= res;
@@ -85,11 +85,18 @@ public:
     int getDEF() const { return def; }
     int getINT() const { return mag; }
     int getRES() const { return res; }
+    
     ENTITY_TYPE getType() const { return ent_type; }
 
     void setHP(int value) { hp = value; }
+    void setMaxHP(int value) { 
+        int currentHP = getHP(); 
+        int currentMaxHP = getMaxHP();
+        setHP(currentHP + (value - currentMaxHP)); 
+        maxHp = value; }
     void setATK(int value) { atk = value; }
     void setDEF(int value) { def = value; }
     void setINT(int value) { mag = value; }
     void setRES(int value) { res = value; }
+    
 };

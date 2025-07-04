@@ -31,15 +31,15 @@ public:
     Game();
     virtual ~Game();
 
-    //Accessors idk what that means
-    const bool isRunning() const;
-
+    
+    
     //Functions
     void update();
     void updateEvents();
     void render();
-  
+    
     //Simple functions
+    const bool isRunning() const;
     Party& getParty() { return party; }
     void setState(State* newState) {
         std::cout << "[DEBUG] Deleting old state: " << (state ? state->getName() : "null") << std::endl;

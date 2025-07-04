@@ -16,28 +16,8 @@ int main() {
 
         //Render
         game.render();
-
-
-
-
-
-
-
-
-        // sf::Event event;
-        // while (window.pollEvent(event)) {
-        //     if (manager.getState())
-        //         manager.getState()->handleEvent(window, event);
-        // }
-        // if (manager.getState())
-        //     manager.getState()->update(window);
-
-        // window.clear();
-        // if (manager.getState())
-        //     manager.getState()->render(window);
-        // window.display();
     }
-    // // Create party
+    
    
 
     return 0;

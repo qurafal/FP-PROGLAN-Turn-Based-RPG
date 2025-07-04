@@ -14,7 +14,7 @@ private:
     Party *party; // Pointer biar stat nya tetep konsisten
     EnemyGroup *enemies;
 
-    FloorState *floorState; // Pointer to the floor state for returning after battle
+    FloorState *floorState; // Pointer biar gak kerandom lagi floornya
 
     sf::Font font;
     sf::Text title;
@@ -34,12 +34,12 @@ private:
     int selectedParty = 0;
     int selectedEnemy = 0;
     bool playerActionChosen = false;
-    bool attackChosen = true; // true = attack, false = skill (expand as needed)
+    // bool attackChosen = true; 
 
     std::vector<std::string> actionList = {"Attack", "Skill 1", "Skill 2", "Skill 3"};
     int selectedAction = 0;
 
-    int globalAP = 6; // Global Action Points for the turn
+    int globalAP = 6; 
 
     int turn = 0;
 
@@ -51,7 +51,7 @@ private:
 
     // Character sprites
     sf::Texture characterTexture[4];
-    sf::Sprite characterSprites[4]; // For up to 4 party members
+    sf::Sprite characterSprites[4]; // For up to 4 char
 
     // Enemy sprites
     sf::Texture enemyTexture[3];
@@ -59,25 +59,14 @@ private:
 
     // Effect sprites
     sf::Texture attackEffectTexture;
-    sf::Texture damageEffectTexture;
-    sf::Texture healEffectTexture;
-    sf::Sprite effectSprite;
 
     // Animation variables
     sf::Clock animationClock;
-    float animationTime = 0.0f;
-    bool isAnimating = false;
-    enum AnimationType
-    {
-        NONE,
-        ATTACK_ANIMATION,
-        DAMAGE_ANIMATION,
-        HEAL_ANIMATION,
-        ENEMY_ATTACK_ANIMATION
-    };
-    AnimationType currentAnimationType = NONE;
-    int animationTargetParty = -1;
-    int animationTargetEnemy = -1;
+    float animationSpeed = 0.2f; // time per frame
+    int currentFrame = 1;
+    int frameWidth = 180;  
+    int frameHeight = 180; 
+    int maxFrames = 11;
 
 public:
     BattleState(Game *game, EnemyGroup *enemies, FloorState *floorState);

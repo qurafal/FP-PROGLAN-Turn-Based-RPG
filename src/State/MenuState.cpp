@@ -15,7 +15,7 @@ MenuState::MenuState(Game *game)
     }
     backgroundSprite.setTexture(texture);
     
-    // Load font and set up title text
+    
     if (!font.loadFromFile("PixelOperator.ttf"))
     {
         throw std::runtime_error("Failed to load font");
@@ -24,7 +24,7 @@ MenuState::MenuState(Game *game)
     title.setString("Exploration 22");
     title.setCharacterSize(50);
     title.setFillColor(sf::Color::White);
-    title.setPosition(100, 100); // Set position as needed
+    title.setPosition(100, 100); 
 }
 
 void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
@@ -56,7 +56,7 @@ void MenuState::handleEvent(sf::RenderWindow &window, sf::Event &event)
                 {
                 case 0:
                     std::cout << "[SELECT] Begin Exploration" << std::endl;
-                    game->setState(new SecondMenu(game, nullptr)); // Assuming you have a SecondMenu state
+                    game->setState(new SecondMenu(game, nullptr)); 
                     return;
                     break;
                 case 1:
@@ -90,7 +90,7 @@ void MenuState::render(sf::RenderWindow &window)
         optionText.setString(options[i]);
         optionText.setCharacterSize(30);
         optionText.setFillColor(i == selectedOption ? sf::Color::Yellow : sf::Color::White);
-        optionText.setPosition(100, 200 + i * 50); // Adjust position as needed
+        optionText.setPosition(100, 200 + i * 50); 
         window.draw(optionText);
     }
 }

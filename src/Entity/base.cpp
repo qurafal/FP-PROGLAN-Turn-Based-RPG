@@ -1,4 +1,5 @@
-//Implementasi dari AP dari base
+//KAYAKNYA GAK KEPAKE 
+// KARENA globalAP ditaroh di BattleState
 #include "base.h"
 int globalAP = 6;
 void resetGlobalAP() {

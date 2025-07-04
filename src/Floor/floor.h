@@ -19,8 +19,6 @@ public:
     Floor(int currentFloor);
     void generateFloor(int currentFloor);
 
-
-    //Accessors
     //steps[step][branch] itu node
     //steps[step] itu branch kalo ada
     Node* getNode(size_t step, size_t branch = 0) const {

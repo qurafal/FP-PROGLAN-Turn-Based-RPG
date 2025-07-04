@@ -1,31 +1,62 @@
 #pragma once
-
+#include <random>
 #include "state.h"
 #include "../Battle/party.h"
 
-class Game; // Forward declaration
+class Game;       // Forward declaration
 class FloorState; // Forward declaration
 
-class EventState : public State {
+class EventState : public State
+{
 private:
-    Game *game; // Pointer to the game instance
-    Party *party; // Pointer to the party instance
-    FloorState *floorState; // Pointer to the floor state for returning after event
+    Game *game;             
+    Party *party;           
+    FloorState *floorState; 
 
     sf::Font font;
     sf::Text title;
 
     // Event-specific variables
-    std::string eventDescription; // Description of the event
-    std::vector<std::string> choices; // Choices available in the event
-    int selectedChoice = 0; // Index of the currently selected choice
+    sf::Text titleText;
+    sf::Text descriptionText; 
+    sf::Text choiceTexts[3];
 
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
 
-    std::vector<std::string> eventPages;
-    int currentPage = 0; // Current page of the event description' 
-    
-    std::vector<std::string> eventResults; 
-    int resultIndex = 0; 
+    // Event System
+    struct Choice
+    {
+        std::string text;
+        std::string result;
+        bool isUpgrade;
+        int upgradeType; // 0=HP, 1=ATK, 2=DEF, 3=MAG, 4=RES
+        int upgradeAmount;
+        int targetCharacter; // -1 = all party, 0-3 = specific character
+    };
+
+    struct EventScenario
+    {
+        std::string title;
+        std::string description;
+        std::vector<Choice> choices;
+        std::string backgroundPath;
+    };
+
+    std::vector<EventScenario> scenarios;
+    int currentScenario;
+    int selectedChoice;
+    bool showingResult;
+    std::string resultText;
+
+    // RNG
+    std::random_device rd;
+    std::mt19937 gen;
+
+    void initializeScenarios();
+    void selectRandomScenario();
+    void executeChoice(const Choice &choice);
+    void applyUpgrade(int charIndex, int upgradeType, int amount);
 
 public:
     EventState(Game *game, FloorState *floorState);
@@ -34,7 +65,8 @@ public:
     void update() override;
     void render(sf::RenderWindow &window) override;
 
-    std::string getName() const override {
+    std::string getName() const override
+    {
         return "EventState";
     }
 };

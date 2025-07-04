@@ -3,7 +3,7 @@
 
 void Game::initVariables() {
     this->window = nullptr;
-    this->state = new MenuState(this); // Assuming you have a MenuState class derived from State
+    this->state = new MenuState(this);
     currentFloor = 1; 
     this->floor = std::make_unique<Floor>(1); 
 
@@ -35,14 +35,12 @@ Game::~Game()
     delete this->window;
 }
 
-//Accessors still don't know what that means
+
 const bool Game::isRunning() const
 {
     return this->window->isOpen();
     
 }
-
-
 
 //Funcs
 

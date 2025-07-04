@@ -7,6 +7,7 @@ Floor::Floor(int currentFloor)
     generateFloor(currentFloor);
 }
 
+//Randomizer 
 std::unique_ptr<Node> Floor::generateRandomNodes(std::mt19937 &gen, bool& shopExists)
 {
     std::uniform_int_distribution<> dist(0, 2);
@@ -21,7 +22,7 @@ std::unique_ptr<Node> Floor::generateRandomNodes(std::mt19937 &gen, bool& shopEx
     {
     case BATTLE: {
         EnemyGroup group;
-        std::uniform_int_distribution<> enemyCountDist(2, 3); // 2 or 3 enemies
+        std::uniform_int_distribution<> enemyCountDist(2, 3); // 2 atau 3 musuh
         int numEnemies = enemyCountDist(gen);
         std::uniform_int_distribution<> templateDist(0, ENEMY_TEMPLATES.size() - 1);
         for (int i = 0; i < numEnemies; ++i) {

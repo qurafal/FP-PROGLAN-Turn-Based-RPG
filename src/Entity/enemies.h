@@ -35,6 +35,8 @@ public:
         
         Entity::takeDamage(dmg, attackType);
     }
+
+    //SISTEM BREAK kayaknya gak kepake karena musuh keburu mati sebelum bisa break, dan belum sempet
     void increaseBreakGauge(int amount) {
         breakGauge += amount;
         if (breakGauge > breakGaugeMax) {
@@ -55,24 +57,3 @@ public:
     bool getIsBroken() const { return isBroken; }
     void resetBreak() { isBroken = false; }
 };
-
-// class Goblin : public Enemy
-// {
-// public:
-//     Goblin();
-
-//     void attack1(Character &target) override;
-//     void attack2(Character &target) override;
-// };
-// class Skeleton : public Enemy
-// {
-// public:
-//     Skeleton();
-
-//     void attack1(Character &target) override;
-//     void attack2(Character &target) override;
-// };
-//Witch
-//Wizard
-//Fire Worm
-//Slime

@@ -5,16 +5,18 @@
 
 class FloorState : public State {
 private:
-    Game *game; // Pointer to the game instance
-    Floor floor; // The floor instance
+    Game *game; 
+    Floor floor; 
 
     friend class BattleState; 
+    friend class EventState;
+    
     
     sf::Font font;
     sf::Text title;
     
     
-    int selectedStep = 0; // 
+    int selectedStep = 0; 
     int selectedBranch = 0;
     int maxVisitedStep = -1; 
 

@@ -5,7 +5,7 @@
 PartySelectState::PartySelectState(Game *game)
     : game(game)
 {
-    // Load font and set up title text
+    
     if (!font.loadFromFile("PixelOperator.ttf"))
     {
         throw std::runtime_error("Failed to load font");
@@ -14,7 +14,7 @@ PartySelectState::PartySelectState(Game *game)
     title.setString("Who will sacrifice themselves?");
     title.setCharacterSize(32);
     title.setFillColor(sf::Color::Black);
-    title.setPosition(50, 50); // Set position as needed
+    title.setPosition(50, 50); 
 
     background.loadFromFile("src/Assets/Img/PartySelectState/PartySelectBackground.png");
     backgroundSprite.setTexture(background);
@@ -85,30 +85,28 @@ void PartySelectState::handleEvent(sf::RenderWindow &window, sf::Event &event)
 }
 void PartySelectState::update()
 {
-    // No specific update logic needed for this state
-    // All updates are handled in handleEvent
 }
 void PartySelectState::render(sf::RenderWindow &window)
 {
-    window.clear(sf::Color(30, 30, 30)); // Clear the window with a dark color
+    window.clear(sf::Color(30, 30, 30)); 
     backgroundSprite.setScale(4.2,3.1);
-    window.draw(backgroundSprite);       // Draw background
+    window.draw(backgroundSprite);
 
-    // Draw title
+    
     window.draw(title);
 
-    // Draw highlight behind the selected character name (optional, use highlightTextSprite if you want)
+    // highlight nama
     highlightTextSprite.setScale(0.95f, 0.95f); 
-    highlightTextSprite.setPosition(31, 125 + selectedOption * 40 - 4); // Adjust as needed
+    highlightTextSprite.setPosition(31, 125 + selectedOption * 40 - 4); 
     window.draw(highlightTextSprite);
 
 
-    // Draw selection box for the currently selected character
-    selectedBoxSprite.setScale(3, 3); // Adjust scale as needed
-    selectedBoxSprite.setPosition(210, 20); // Adjust as needed
+    
+    selectedBoxSprite.setScale(3, 3); 
+    selectedBoxSprite.setPosition(210, 20); 
     window.draw(selectedBoxSprite);
 
-    // Draw character options with correct color
+    
     for (size_t i = 0; i < 4; ++i)
     {
         sf::Text text(characters[i], font, 32);
@@ -116,22 +114,16 @@ void PartySelectState::render(sf::RenderWindow &window)
         int idx = game->getParty().findMemberByName(characters[i]);
         if (idx != -1)
         {
-            // In party: red if selected, gray otherwise
+            //merah udah dipilih
             text.setFillColor(i == selectedOption ? sf::Color::Red : sf::Color(100, 100, 100));
         }
         else
         {
-            // Not in party: yellow if selected, white otherwise
+            //kuning lagi di "hover"
             text.setFillColor(i == selectedOption ? sf::Color::Yellow : sf::Color::White);
         }
         window.draw(text);
     }
-
-    // // Draw current party members
-    // sf::Text partyTitle("Party:", font, 24);
-    // partyTitle.setPosition(350, 70);
-    // window.draw(partyTitle);
-
     for (size_t i = 0; i < game->getParty().size(); ++i)
     {
         Character *member = game->getParty().getMember(i);
@@ -145,7 +137,6 @@ void PartySelectState::render(sf::RenderWindow &window)
     }
 }
 
-// Other Functions
 std::string PartySelectState::getName() const
 {
     return "PartySelectState";
