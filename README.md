@@ -1,41 +1,18 @@
 **Final Project Pemrograman Lanjut**
 
----
-
-## DAFTAR ISI
-1. Pendahuluan
-2. Deskripsi Proyek
-3. Fitur Utama
-4. Arsitektur Sistem
-5. Implementasi Teknis
-6. Struktur File
-7. Gameplay dan Mekanik
-8. Teknologi yang Digunakan
-9. Kesimpulan
-
----
 
 ## 1. PENDAHULUAN
 
-**Exploration 22** adalah sebuah game RPG (Role-Playing Game) berbasis turn-based combat yang dikembangkan menggunakan C++ dan library SFML (Simple and Fast Multimedia Library). Game ini menggabungkan elemen eksplorasi dungeon, pertarungan strategis, dan pengembangan karakter dalam sebuah pengalaman gaming yang komprehensif.
+**Exploration 22** adalah sebuah game RPG (Role-Playing Game) berbasis turn-based combat yang dibuat menggunakan C++ dan library SFML (Simple and Fast Multimedia Library).
 
-### Tujuan Proyek
-- Implementasi konsep Object-Oriented Programming dalam pengembangan game
-- Penerapan design patterns (State Pattern, Factory Pattern, Observer Pattern)
-- Demonstrasi kemampuan manajemen memori dengan smart pointers
-- Penggunaan library grafis SFML untuk rendering dan audio
-
----
 
 ## 2. DESKRIPSI PROYEK
 
-**Exploration 22** adalah game petualangan di mana pemain memimpin sebuah party beranggotakan hingga 3 karakter untuk menjelajahi 5 lantai dungeon yang berbeda. Setiap lantai memiliki 5 langkah dengan berbagai jenis node yang menawarkan tantangan dan reward yang berbeda.
+**Exploration 22** adalah game petualangan di mana pemain memimpin sebuah party beranggotakan hingga 3 karakter untuk menjelajahi 5 lantai dungeon yang berbeda. Setiap lantai memiliki 5 langkah dengan berbagai jenis node yang memiliki tantangan dan reward yang berbeda.
 
 ### Konsep Dasar
 - **Genre**: Turn-based RPG dengan elemen eksplorasi
 - **Platform**: Desktop (Windows/Linux)
-- **Target Audience**: Penggemar game strategi dan RPG
-- **Durasi Gameplay**: 30-60 menit per playthrough
 
 ---
 
@@ -43,24 +20,22 @@
 
 ### 3.1 Sistem Karakter
 - **4 Karakter Unik**: Arthesa, Ahmed, Perkia, dan Hamilla
-- **Sistem Stats**: HP, ATK, DEF, MAG, RES dengan progression dinamis
+- **Sistem Stats**: HP, ATK, DEF, MAG, RES 
 - **Tipe Entity**: MORTAL, ETHEREAL, CONSTRUCT (rock-paper-scissors system)
 - **Skill System**: Setiap karakter memiliki 4 kemampuan unik dengan AP cost berbeda
 
 ### 3.2 Sistem Pertarungan
 - **Turn-based Combat**: Pemain dan musuh bergantian menyerang
 - **AP System**: 6 Action Points per turn untuk strategi resource management
-- **Target Selection**: Pemilihan target yang fleksibel
-- **Damage Calculation**: Kompleks dengan berbagai modifier
+- **Damage Calculation**: Memiliki sedikit kompleksitas namun masih simpel
 
 ### 3.3 Sistem Eksplorasi
 - **5 Lantai Dungeon**: Setiap lantai memiliki struktur unik
-- **Node Types**: BATTLE, EVENT, SHOP, BOSS
+- **Node Types**: BATTLE, EVENT, SHOP, BOSS (SHOP dan BOSS belum terimplementasi)
 - **Linear Progression**: Single → Branch → Single → Branch → Boss
-- **Visual Navigation**: Interface grafis untuk navigasi
 
 ### 3.4 Sistem Event
-- **5 Random Events**: Scenario acak dengan pilihan bermakna
+- **5 Random Events**: Scenario acak dengan pilihan
 - **Character Progression**: Event memberikan upgrade permanent
 - **Multiple Choices**: Setiap event memiliki 3 pilihan dengan konsekuensi berbeda
 - **Story Elements**: Narasi yang memperkaya pengalaman bermain
@@ -83,7 +58,7 @@ public:
 **Implementasi**:
 - MenuState, FloorState, BattleState, EventState, PartySelectState
 - Transisi state yang clean dan terorganisir
-- Separation of concerns untuk setiap gameplay phase
+- Pemisahan state untuk tiap bagian berbeda
 
 #### Factory Pattern
 ```cpp
@@ -92,14 +67,10 @@ const std::vector<std::function<std::unique_ptr<Enemy>()>> ENEMY_TEMPLATES = {
 };
 ```
 **Implementasi**:
-- Dynamic enemy creation
-- Scalable enemy system
-- Lambda-based attack behaviors
+- Musuh lebih mudah dibuat
+- Scaling musuh bisa dilakukan (Belum diimplementasikan)
 
-#### Observer Pattern
-- Party management system
-- Real-time HP/status updates
-- Event-driven UI updates
+
 
 ### 4.2 Class Hierarchy
 
@@ -124,9 +95,8 @@ Node (Abstract Base)
 ## 5. IMPLEMENTASI TEKNIS
 
 ### 5.1 Memory Management
-- **Smart Pointers**: Extensive use of `std::unique_ptr` dan `std::shared_ptr`
-- **RAII Principle**: Automatic resource management
-- **No Memory Leaks**: Proper destructor implementation
+- **Smart Pointers**: Banyak menggunakan `std::unique_ptr` dan `std::shared_ptr`
+- **Tidak ada Memory Leaks**:Karena banyak menggunakan smart pointer serta proses pen-delete-an objek yang dibuat dalam fungsi yang rapih
 
 ### 5.2 Data Structures
 ```cpp
@@ -140,17 +110,6 @@ std::vector<std::vector<std::unique_ptr<Node>>> steps;
 std::vector<std::unique_ptr<Enemy>> enemies;
 ```
 
-### 5.3 Error Handling
-- Exception handling untuk file loading
-- Defensive programming practices
-- Graceful error recovery
-
-### 5.4 Performance Optimization
-- Efficient sprite rendering
-- Minimized dynamic allocations
-- Optimized game loop
-
----
 
 ## 6. STRUKTUR FILE
 
@@ -209,91 +168,31 @@ Player Turn:
 └── Action Resolution
 
 Enemy Turn:
-├── AI Target Selection
+├── Random Target Selection
 ├── Random Attack Choice
 └── Damage Application
 ```
 
 ### 7.3 Character Progression
 - **Event-based Upgrades**: Permanent stat increases melalui events
-- **No Traditional Leveling**: Progression melalui pilihan strategis
-- **Risk vs Reward**: Setiap pilihan memiliki trade-off
+- **No Traditional Leveling**: Progression melalui events bukan dari leveling
 
 ### 7.4 Enemy System
 - **5 Enemy Types**: Goblin, Skeleton, Witch, Wizard, Fire Worm
-- **Lambda-based Attacks**: Fleksibilitas dalam behavior definition
 - **Randomized Encounters**: 2-3 enemies per battle node
 
 ---
 
-## 8. TEKNOLOGI YANG DIGUNAKAN
+## 8. KESIMPULAN
 
-### 8.1 Programming Language
-- **C++14**: Modern C++ features
-- **STL**: Standard Template Library untuk containers
-- **Smart Pointers**: Memory management
-
-### 8.2 Libraries
-- **SFML 2.5+**: Graphics, Audio, Window management
-  - `sf::Graphics`: Rendering sprites dan text
-  - `sf::Audio`: Background music dan sound effects
-  - `sf::Window`: Event handling dan window management
-
-### 8.3 Development Tools
-- **GCC**: Compiler dengan C++14 support
-- **Makefile**: Build automation
-- **Git**: Version control
-
-### 8.4 Assets
-- **Sprites**: Custom pixel art untuk characters dan enemies
-- **Fonts**: PixelOperator.ttf, OldEnglishGothicPixel.ttf
-- **Music**: Background theme "Horsemen Approach"
-- **Backgrounds**: Scene-specific artwork
-
----
-
-## 9. FITUR TEKNIS LANJUTAN
-
-### 9.1 Animation System
-```cpp
-// Sprite animation dengan frame cycling
-sf::Clock animationClock;
-currentFrame = (currentFrame + 1) % maxFrames;
-characterSprites[i].setTextureRect(sf::IntRect(currentFrame * frameWidth, 0, frameWidth, frameHeight));
-```
-
-### 9.2 Random Generation
-```cpp
-// Floor generation dengan controlled randomness
-std::random_device rd;
-std::mt19937 gen(rd());
-std::uniform_int_distribution<> dist(0, 2);
-```
-
-### 9.3 Event System
-- **Modular Events**: Easy addition of new scenarios
-- **Choice Consequences**: Immediate and long-term effects
-- **Upgrade System**: Multiple stat modification types
-
-### 9.4 UI/UX Features
-- **Keyboard Navigation**: Intuitive controls
-- **Visual Feedback**: Color-coded selection dan status
-- **State Persistence**: Game state maintained across transitions
-
----
-
-## 10. KESIMPULAN
-
-### 10.1 Pencapaian Proyek
+### 8.1 Pencapaian Proyek
 **Exploration 22** berhasil mengimplementasikan:
-- ✅ Complete RPG game loop
-- ✅ Object-oriented design dengan proper inheritance
+- ✅ Object-oriented design dengan inheritance
 - ✅ Memory-safe programming dengan smart pointers
-- ✅ Modular architecture untuk easy expansion
-- ✅ Rich gameplay dengan multiple systems
-- ✅ Professional-grade error handling
+- ✅ Modular architecture untuk memudahkan pengembangan
 
-### 10.2 Pembelajaran Teknis
+
+### 8.2 Pembelajaran Teknis
 Proyek ini mendemonstrasikan:
 - **Advanced C++**: Modern C++ practices dan STL usage
 - **Design Patterns**: Practical implementation dalam game development
@@ -301,26 +200,9 @@ Proyek ini mendemonstrasikan:
 - **Resource Management**: Proper handling of assets dan memory
 - **UI Programming**: Event-driven interface development
 
-### 10.3 Potensi Pengembangan
+### 8.3 Potensi Pengembangan
 Future enhancements yang dapat diimplementasikan:
 - **Save/Load System**: Game state persistence
 - **Shop System**: Item trading dan equipment
-- **Boss Battles**: Unique encounters dengan special mechanics
+- **Boss Battles**: Unique encounters dengan special mechanic
 - **Audio Effects**: Sound feedback untuk actions
-- **Multiplayer**: Network-based party cooperation
-
-### 10.4 Nilai Edukatif
-Proyek ini mencakup konsep-konsep penting dalam:
-- **Software Engineering**: Clean code, modularity, testing
-- **Game Development**: Game loops, state machines, asset management
-- **Object-Oriented Programming**: Inheritance, polymorphism, encapsulation
-- **C++ Programming**: Modern syntax, memory management, STL
-
----
-
-**Total Lines of Code**: ~2000+ LOC  
-**Development Time**: Semester duration  
-**File Count**: 30+ source files  
-**Asset Count**: 20+ sprites, backgrounds, dan audio files  
-
-Proyek **Exploration 22** berhasil menciptakan pengalaman gaming yang lengkap sambil mendemonstrasikan penerapan konsep-konsep advanced programming dalam konteks yang praktis dan menarik.
